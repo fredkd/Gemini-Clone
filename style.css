@@ -178,6 +178,7 @@ body.hide-header .header{
     resize: none;
     color: var(--text-color);
     padding: 1rem 1.75rem;
+    border-radius: 100px;
     background: var(--secondary-color);
     transition: background 0.3s ease;
 
@@ -229,4 +230,11 @@ body.hide-header .header{
 .prompt__form-input:valid 
 ~ .prompt__form-button#deleteButton{
     right: 3.5rem; 
+}
+
+.prompt__disclaim{
+    text-align: center;
+    color: var(--placeholder-color);
+    font-size: 0.85rem;
+    margin-top: 1rem;
 }
