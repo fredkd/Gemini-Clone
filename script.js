@@ -160,4 +160,83 @@ const requestApiResponse = async(incomingMessageElement) => {
     }
 }
 
-// add cop 
+// add copy button to code blocks
+const addCopyButtonToCodeBlocks = () => {
+    const codeBlocks = document.querySelector("pre")
+    codeBlocks.forEach((block) => {
+        const codeElement = block.querySelector('code')
+        let language = [...codeElement.classList].find(cls => cls.startsWith('language-'))?.replace('language-', '') || 'Text'
+
+        const languageLabel = document.createElement('div')
+        languageLabel.innerText = language.charAt(0).toUpperCase() + language.slice(1)
+        languageLabel.classList.add('code__language--label') 
+        block.appendChild(languageLabel)
+
+        const copyButton = document.createElement('button')
+        copyButton.innerHTML = `<i class=bx bx-copy></i>`
+        copyButton.appendChild(copyButton)
+
+        copyButton.addEventListener('click' , () => {
+            navigator.clipboard.writeText(codeElement.innerText).then (() => {
+                copyButton.innerHTML = `<i class='bx bx-check'></i>`
+                setTimeout(() => copyButton.innerHTML = `<i class='bx bx-copy'><i>`, 2000)
+            }).catch(err => {
+                console.error("copy failed:", err)
+                alert("unable to copy text!")
+
+            })
+        })
+    })
+}
+
+// show loadin animation during API Request
+
+const displayLoadingAnimation = () => {
+    const laodingHtml = `
+        <div class="message__content">
+            <img class="message__avatar" src="assets/gemini.svg" alt="gemini avatar">
+            <p class="message__text"></p>
+            <div class="message__loading-indicator">
+                <div class="message__loading-bar"></div>
+                <div class="message__loading-bar"></div>
+                <div class="message__loading-bar"></div>
+            </div>
+        </div>
+        <span onClick="copyMessageToClipboard(this)"
+        class="message__icon hide"><i class='bx bx-copy-alt'></i></span>
+    
+    `
+
+    const loadingMessageElement = createChatMessageElement(laodingHtml, "messsage--incoming", "message--loading")
+    chatHistoryContainer.appendChild(loadingMessageElement)
+
+    requestApiResponse(loadingMessageElement)
+}
+
+
+//copy message to clipboard
+const copyMessageToClipboard = (copyButton) => {
+    const messageContent = copyButton.parentElement.querySelector(".message__text").innerText
+
+    navigator.clipboard.writeText(messageContent)
+    copyButton.innerHTML = `<i class='bx bx-check'></i>` //confirmation icon
+
+    setTimeout(() => copyButton.innerHTML = `<i class='bx bx-copy-alt'></i>`, 1000) //revert icon after 1 sec
+}
+
+
+// handle sending chat messages 
+const handleOutgoingMessage = () => {
+    currentUserMesssage = messageForm.querySelector(".prompt__form-input").ariaValueMax.trim() || currentUserMesssage
+    if (!currentUserMesssage || isGeeneratingResponse) return //if no message or already generating response
+
+    isGenerationgResponse = true
+    
+    const outgoingMessageElement = `
+        
+    <div
+    
+    
+    
+    `
+}
